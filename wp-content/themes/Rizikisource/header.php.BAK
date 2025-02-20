@@ -1,0 +1,410 @@
+
+<?php
+
+$insights = get_posts( array(
+    'posts_per_page' => 12,
+    'offset'         => 0,
+	'post_type'      =>'insight'
+) );
+
+
+$expertise = get_posts( array(
+    'posts_per_page' => 12,
+    'offset'         => 0,
+	'post_type'      =>'expertise',
+ 'meta_key' => '_ordering', 
+  'orderby' => 'meta_value_num',
+  'order' => 'ASC',
+) );
+
+
+
+$tags = array();
+foreach ($insights  as $insight ) {
+$post_tags =  get_post_meta($insight->ID, '_expertise', true );
+
+// $pslug = preg_replace("/[^a-zA-Z0-9]+/", "", $post_tags[0]->slug);
+$pslug = get_the_title($post_tags);
+
+$tags[$insight ->ID] = $pslug;
+
+}
+
+      // 
+wp_reset_query();   
+   $sino=array_unique($tags);
+
+   //  print_r($sino); 
+   //  exit; 
+
+?>
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <title>KO Associates</title>
+      <meta content="width=device-width, initial-scale=1.0" name="viewport">
+      <meta content="" name="keywords">
+      <meta content="" name="description">
+      <!-- Favicon -->
+      <link href="img/favicon.png" rel="icon">
+      <!-- Google Web Fonts -->
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link
+         href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;500&display=swap"
+         rel="stylesheet">
+      <!-- Icon Font Stylesheet -->
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+      <!-- Libraries Stylesheet -->
+      <link href="<?php bloginfo('template_directory'); ?>/lib/animate/animate.min.css" rel="stylesheet">
+      <link href="<?php bloginfo('template_directory'); ?>/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+      <link href="<?php bloginfo('template_directory'); ?>/css/owl.css" rel="stylesheet">
+      <link href="<?php bloginfo('template_directory'); ?>/lib/glightbox/css/glightbox.min.css" rel="stylesheet">
+      <!-- Customized Bootstrap Stylesheet -->
+      <link href="<?php bloginfo('template_directory'); ?>/css/bootstrap.min.css" rel="stylesheet">
+      <!-- Template Stylesheet -->
+      <link href="<?php bloginfo('template_directory'); ?>/css/style.css" rel="stylesheet">
+      <link href="<?php bloginfo('template_directory'); ?>/css/style.less" rel="stylesheet">
+      <link href="<?php bloginfo('template_directory'); ?>/css/mega.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+   </head>
+   <body>
+      <!-- Spinner Start -->
+      <div id="spinner"
+         class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+         <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
+         </div>
+      <!-- Spinner End -->
+      <!-- Navbar Start -->
+      <div class="container-fluid fixed-top px-0 wow fadeIn" data-wow-delay="0.1s">
+         <div class="top-bar row gx-0 align-items-center d-none d-lg-flex">
+            <div class="col-lg-6 px-5 text-start">
+            </div>
+            <div class="col-lg-6 px-5 text-end">
+               <small><i class="fa fa-map-marker-alt text-primary me-2"></i>Nairobi | Kampala | Kigali | Addis Ababa</small>
+               <!-- <small><i class="fa fa-envelope text-primary me-2"></i>info@koassociates.co.ke</small>
+                  <small class="ms-4"><i class="fa fa-phone-alt text-primary me-2"></i>+254 20 2713 977</small> -->
+            </div>
+         </div>
+
+      <div class="subnav subnavhover desktoponly" > 
+         <nav class="navbar navbar-expand-lg navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
+            <div class="container">
+               <div class="row">
+                  <div class="col">
+                     <a href="<?php echo site_url();?>" class="">
+                        <h1 class="display-5 text-primary m-0 mt-3 logo"><image src="<?php bloginfo('template_directory'); ?>/img/ko-citadel.svg" heigth="auto" width="85%"></h1>
+                     </a>
+                  </div>
+                  <div class="col d-flex justify-content-end">
+                     <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse"
+                        data-bs-target="#navbarCollapse">
+                     <span class="navbar-toggler-icon"></span>
+                     </button>
+                  </div>
+               </div>
+            </div>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+               <div class="navbar-nav ms-auto p-4 p-lg-0 mt-3" id="nav" >
+                  <!-- <div class="nav-item dropdown">
+                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">About</a>
+                     <div class="dropdown-menu border-light m-0">
+                         <a href="#!" class="dropdown-item">The Firm</a>
+                         <a href="#!" class="dropdown-item">Our People</a>
+                       
+                        
+                     </div>
+                     </div> -->
+            <a href="<?php echo site_url();?>" class="nav-item nav-link">Home</a>
+            <a href="<?php echo site_url();?>/about-us" class="nav-item nav-link">About Us</a>
+            <div class="dropdown dropdowntext"  id="not_eactive">
+    <button class="dropbtn dropdowntextbtn">Expertise 
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content not_eactive  container-xxl py-5 " >
+         <div class="row">
+
+      <?php $count =0; 
+     
+      ?>
+        <div class="column px-3">
+           <div class="list-group list-group-flush">
+                <?php 
+                foreach($expertise as $ex) {
+
+                  if($count<=3) {
+                 ?>
+                <a href="<?php echo get_the_permalink($ex->ID); ?>" class="list-group-item list-group-item-action"  title="<?php echo $ex->post_title; ?>"><?php echo $ex->post_title; ?></a>
+                <?php  }  $count++;   wp_reset_query();  }
+                ?>   
+           </div> 
+        </div>  
+  
+     
+      <?php  
+    $count =0; 
+      ?>
+        <div class="column px-3">
+           <div class="list-group list-group-flush">
+                <?php 
+                foreach($expertise as $ex) {
+
+                  if(($count >= 4 ) && ($count <=7 ) ){
+                 ?>
+                <a href="<?php echo get_the_permalink($ex->ID); ?>" class="list-group-item list-group-item-action"  title="<?php echo $ex->post_title; ?>"><?php echo $ex->post_title;?></a>
+                <?php  }  $count++;   wp_reset_query(); }
+                ?>   
+           </div> 
+        </div>  
+
+      <?php  $count =0; 
+   
+      ?>
+        <div class="column px-3">
+           <div class="list-group list-group-flush">
+                <?php 
+                foreach($expertise as $ex) {
+
+                  if($count > 7 ) {
+                 ?>
+                <a href="<?php echo get_the_permalink($ex->ID); ?>" class="list-group-item list-group-item-action"  title="<?php echo $ex->post_title; ?>"><?php echo $ex->post_title;  ?></a>
+                <?php  } $count++;   wp_reset_query(); }
+                ?>   
+           </div> 
+        </div>  
+   
+      </div>
+      </div>
+    </div>
+  
+
+            <a href="<?php echo site_url();?>/people" class="nav-item nav-link">People</a>
+ 
+   <div class="dropdown dropdowntext"  id="not_iactive">
+    <button class="dropbtn dropdowntextbtn">Insights 
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content not_iactive  container-xxl py-5" >
+ 
+      <div class="row">
+
+      <?php
+      	if($sino){
+            foreach($sino as $key=>$custom_term) {
+      	 {?>
+
+        <div class="column px-3">
+          <h5><?php echo $custom_term; ?> </h5>
+          <div class="list-group list-group-flush">
+                
+                <?php foreach($insights as $check) {
+                $category= get_post_meta( $check->ID, '_expertise', false );
+                $icategory = get_the_title($category[0]);
+
+                  // wp_reset_query();
+
+                $args = get_posts(array(
+                  'posts_per_page' => -1,
+                  'offset'         => 0,
+                  'post_type'     => 'insight',
+                  'meta_key'      => '_expertise',
+                  'meta_value'    =>   $category,
+                )); ?>
+
+                <?php if ($custom_term == $icategory ) {?>
+               
+                <a href="<?php echo get_the_permalink($check->ID); ?>" class="list-group-item list-group-item-action"  title="<?php echo $check->post_title?>"><?php echo $check->post_title ?></a>
+                <?php } wp_reset_query();  }?>  
+
+                  </div> 
+         </div>   
+
+      <?php } } }   ?>  
+      </div>
+      </div>
+    </div>
+  </div> 
+
+
+</div>
+              
+   <div class="d-lg-flex sinosocial">
+                  <a class="btn  btn-sm-square rounded-circle ms-3" href="#search">
+                  <small class="fa fa-search fa-1x text-secondary"></small>
+                  </a>
+                    </div>
+             
+               <div class="d-none d-lg-flex  sinosocial">
+                  <a class="btn btn-light btn-sm-square rounded-circle ms-3" href="https://twitter.com/K_Oassociates" target="_blank">
+                  <small class="fab fa-twitter text-primary"></small>
+                  </a>
+                  <a class="btn btn-light btn-sm-square rounded-circle ms-3" href="https://www.linkedin.com/company/kiptinness-and-odhiambo-associates"  target="_blank">
+                  <small class="fab fa-linkedin-in text-primary"></small>
+                  </a>
+
+                  <a class="btn btn-light btn-sm-square rounded-circle ms-3" href="mailto:info@koassociates.co.ke" target="_blank">
+                  <small class="fa fa-envelope text-primary"></small>
+                  </a>
+               </div>
+            </div>
+         </nav>
+      </div>
+      <!-- Navbar End -->
+   </div>  
+
+<!-- overlay !-->
+<div id="search" class="fade">
+    <a href="#" class="close-btn" id="close-search">
+        <em class="fa fa-times"></em>
+    </a>
+    <div class="container">
+      <div class="row">
+      <div class="col-1 col-sm-4 "></div>
+        <div class="col-10 col-sm-4 ">
+          <form role="search" method="get" id="search-form" action="<?php echo esc_url( home_url( '/' ) ); ?>" >
+            <input type="search"  placeholder="type here" name="s" id="searchbox" value="<?php echo esc_attr( get_search_query() ); ?>">
+            <button type="submit" class="search-submit"><i class="fa fa-search fa-2x"></i></button>
+          </form>
+        </div>
+      <div class="col-1 col-sm-4 "></div>
+      </div>
+    </div>
+</div>
+<!--- /overlay -->
+
+
+
+
+
+<!-- /mega Menu -->
+
+<!-- MObile Mega Menu-->
+   <!-- header start -->
+   <header class="header mobileonly">
+      <div class="container">
+      <!-- <div class="row v-center"> -->
+        <div class="row">
+          <div class="col-7 item-left mobileonly">
+         
+            <a href="<?php echo site_url();?>" class="">
+                        <image src="<?php bloginfo('template_directory'); ?>/img/ko-citadel.svg" heigth="auto" width="70%">
+                     </a>
+          
+          </div>
+
+    
+          <!-- menu start here -->
+          <div class="header-item item-center">
+            <div class="menu-overlay"></div>
+            <nav class="menu">
+              <div class="mobile-menu-head">
+                <div class="go-back"><i class="fa fa-angle-left"></i></div>
+                <div class="current-menu-title"></div>
+                <div class="mobile-menu-close">&times;</div>
+              </div>
+              <ul class="menu-main mobileonly">
+                <li>
+                <a href="<?php echo site_url();?>" class="nav-item nav-link">Home</a>
+                </li>
+                <li>
+               <a href="<?php echo site_url();?>/about-us" class="nav-item nav-link">About Us</a>
+                </li>
+                <li class="menu-item-has-children">
+                  <a href="#">Expertise <i class="fas fa-angle-down"></i></a>
+                  <div class="sub-menu single-column-menu">
+                    <ul>
+
+                  <?php 
+                  foreach($expertise as $ex) {
+                  ?>
+                 <li class="list-group list-group-flush"><a href="<?php echo get_the_permalink($ex->ID); ?>"title="<?php echo $ex->post_title; ?>"><?php echo $ex->post_title; ?></a></li>
+                <?php   wp_reset_query();  }
+                ?>  
+                   
+                    </ul>
+                 
+                </li>
+             
+                <li class="menu-item-has-children">
+                  <a href="#">Insights <i class="fa fa-angle-down"></i></a>
+                  <div class="sub-menu mega-menu mega-menu-column-4 ">
+
+                  <?php
+      	if($sino){
+            foreach($sino as $key=>$custom_term) {
+      	 {?>
+                    <div class="list-item">
+                    <h6><?php echo $custom_term; ?> </h6>
+                      <ul>
+                      <?php foreach($insights as $check) {
+                $category= get_post_meta( $check->ID, '_expertise', false );
+                $icategory = get_the_title($category[0]);
+
+                  // wp_reset_query();
+
+                $args = get_posts(array(
+                  'posts_per_page' => -1,
+                  'offset'         => 0,
+                  'post_type'     => 'insight',
+                  'meta_key'      => '_expertise',
+                  'meta_value'    =>   $category,
+                )); ?>
+
+                <?php if ($custom_term == $icategory ) {?>
+                  <li class="list-group list-group-flush"> <a href="<?php echo get_the_permalink($check->ID); ?>"  title="<?php echo $check->post_title?>"><?php echo $check->post_title ?></a></li>
+                <?php } wp_reset_query();  }?>  
+            </ul>
+                     
+                    </div>
+                    <?php } } }   ?> 
+                  
+                  </div>
+                </li>
+             
+                <li>
+                   <a href="<?php echo site_url();?>/people" class="nav-item nav-link">People</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+          <!-- menu end here -->
+          <div class="col-5 d-flex justify-content-end mobileonly">
+
+          <a class="mobileonly pt-3" href="#search">
+                  <small class="fa fa-search fa-1x text-secondary mobileonly"></small>
+                  </a>
+            <!-- <a href="#"><i class="fas fa-search mobileonly"></i></a> -->
+            <!-- <a href="#"><i class="far fa-heart"></i></a>
+            <a href="#"><i class="fas fa-shopping-cart"></i></a> -->
+            <!-- mobile menu trigger -->
+            <div class="mobile-menu-trigger pt-3">
+              <span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- header end -->
+
+    
+
+    <script>
+ 
+var changeClass = function(name){
+  $('#search').removeAttr('class').addClass(name);
+}
+
+ 
+var changeClass = function(name){
+  $('#expertisemenu').removeAttr('class').addClass(name);
+}
+  </script>
+
+

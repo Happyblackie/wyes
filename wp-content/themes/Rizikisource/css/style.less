@@ -1,0 +1,184 @@
+
+*
+{
+    box-sizing: border-box;
+}
+
+
+
+/**********************/
+/* Full screen search */
+/**********************/
+
+#searchnav
+{
+    align-items: center;
+    background: rgba(0, 0, 0, .975);
+    height: 0;
+    display: flex;
+    justify-content: center;
+    opacity: 0;
+    position: fixed;
+    transition: all .5s;
+    width: 100vw;
+    will-change: transform, opacity;
+    z-index: -1;
+    padding-top:160px;
+
+    &:target
+    {
+        height: 100vh !important;
+        opacity: 1;
+        width: 100vw !important;
+        z-index: 2;
+        .close-btn
+        {
+            display: block;
+        }
+    }
+}
+
+
+.close-btn
+{
+    display: none;
+    color: #fff;
+    font-size: 2rem;
+    position: absolute;
+    top: .5rem;
+    right: 2rem;
+}
+
+/**********************/
+/*   Responsive Menu  */
+/*   (mobile first)   */
+/**********************/
+
+#nav
+{
+    position: relative;
+    ul
+    {
+        align-items: center;
+        background: rgba(0, 0, 0, .95);
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        font-size: 2rem;
+        height: 0;
+        justify-content: center;
+        left: 0;
+        margin: 0;
+        opacity: 0;
+        padding: 0;
+        pointer-events: none;
+        position: fixed;
+        transition: all .5s;
+        top: 0;
+        will-change: opacity;
+        width: 100vw;
+        li
+        {
+            list-style: none;
+            padding: 1rem 0;
+        }
+    }
+    &:target
+    {
+        ul
+        {
+            height: 100vh !important;
+            left: 0;
+            opacity: 1;
+            top: 0;
+            width: 100vw !important;
+        }
+        .close-btn
+        {
+            display: block;
+            position: fixed;
+        }
+    }
+}
+
+@media screen and ( min-width: 768px)
+{
+    #responsive-menu-trigger, #close-menu
+    {
+        display: none;
+    }
+
+    #nav
+    {
+        &, &:target
+        {
+            ul
+            {
+                background: none;
+                display: inline-flex;
+                flex-direction: row;
+                font-size: 1rem;
+                height: auto !important;
+                opacity: 1;
+                padding: 0;
+                pointer-events: initial;
+                position: static;
+                transition: none;
+                width: auto !important;
+                li
+                {
+                    padding: 0;
+                    a
+                    {
+                        text-decoration: none;
+                        font-size: 1rem;
+                        margin-right: 1rem;
+                    }
+                }
+            }
+            .close-btn{
+                display: none;
+            }
+        }
+    }
+}
+
+/**********************/
+/* fly in directions  */
+/**********************/
+
+#search, #nav ul
+{
+    // &.left
+    // {
+    //     left: 0;
+    //     height: 100vh;
+    //     width: 0;
+    // }
+
+    // &.right
+    // {
+    //     height: 100vh;
+    //     width: 0;
+    //     right: 0;
+    //     left: auto !important;
+    // }
+
+    &.bottom.left, &.bottom.right, &.top.left, &.top.right
+    {
+        height: 0;
+    }
+
+    &.bottom
+    {
+        bottom: 0;
+        top: auto !important;
+    }
+
+    &.fade
+    {
+        height: 100vh;
+        width: 100vw;
+        transition: opacity .5s;
+    }
+}
